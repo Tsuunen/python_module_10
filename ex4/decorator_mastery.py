@@ -1,15 +1,17 @@
 from functools import wraps
 from datetime import datetime
 from inspect import signature
+from typing import Callable
 
 
-def spell_timer(func: callable) -> callable:
+def spell_timer(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args, **kwargs):
         print("Casting", func.__name__)
         t1 = datetime.now()
         result = func(*args, **kwargs)
-        print(f"Spell completed in {(datetime.now() - t1).total_seconds()} "
+        print(f"Spell completed in "
+              f"{round((datetime.now() - t1).total_seconds(), 3)} "
               "seconds")
         return (result)
     return (wrapper)
@@ -29,7 +31,7 @@ def power_validator(min_power: int):
     return (decorator)
 
 
-def retry_spell(max_attempts: int) -> callable:
+def retry_spell(max_attempts: int) -> Callable:
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
